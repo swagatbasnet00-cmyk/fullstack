@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>02 — HTML | Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0a0f; --card: #111118; --border: #222230;
+      --accent: #ff6b35; --text: #e8e8f0; --muted: #6b6b80;
+    }
+    body { background: var(--bg); color: var(--text); font-family: 'Syne', sans-serif; }
+
+    nav {
+      padding: 20px 40px;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 16px;
+      font-family: 'Space Mono', monospace; font-size: 13px;
+    }
+    nav a { color: var(--muted); text-decoration: none; }
+    nav a:hover { color: var(--accent); }
+    nav span { color: var(--border); }
+
+    .hero { max-width: 1000px; margin: 0 auto; padding: 60px 40px 20px; }
+    .section-tag {
+      font-family: 'Space Mono', monospace; font-size: 11px;
+      color: var(--accent); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 16px;
+    }
+    h1 { font-size: clamp(36px, 6vw, 72px); font-weight: 800; letter-spacing: -2px; line-height: 1; margin-bottom: 20px; }
+    .intro { font-family: 'Space Mono', monospace; font-size: 14px; color: var(--muted); max-width: 620px; line-height: 1.8; }
+
+    .content { max-width: 1000px; margin: 0 auto; padding: 40px 40px 80px; }
+
+    /* Demo blocks */
+    .demo-block {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 12px; margin-bottom: 32px; overflow: hidden;
+    }
+    .demo-header {
+      padding: 16px 24px;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .demo-title { font-size: 15px; font-weight: 800; }
+    .demo-tag {
+      font-family: 'Space Mono', monospace; font-size: 10px;
+      color: var(--accent); background: #ff6b3515;
+      border: 1px solid #ff6b3530; padding: 3px 10px; border-radius: 4px;
+      letter-spacing: 1px;
+    }
+    .demo-body { padding: 28px; }
+    .demo-explanation {
+      font-family: 'Space Mono', monospace; font-size: 12px;
+      color: var(--muted); line-height: 1.7; margin-bottom: 20px;
+      padding-bottom: 20px; border-bottom: 1px solid var(--border);
+    }
+    .demo-explanation strong { color: var(--accent); }
+    .demo-render { /* live HTML renders here */ }
+
+    /* Code snippet */
+    .code-block {
+      background: #080810; border: 1px solid var(--border);
+      border-radius: 8px; padding: 16px 20px; margin-bottom: 20px;
+      font-family: 'Space Mono', monospace; font-size: 12px;
+      color: #a8b8d0; line-height: 1.7; overflow-x: auto;
+    }
+    .code-block .tag-color { color: #ff6b35; }
+    .code-block .attr-color { color: #7b5ea7; }
+    .code-block .val-color { color: #00ffc2; }
+    .code-block .comment { color: #3a3a50; }
+
+    /* --- HTML demos --- */
+    /* Semantic structure demo */
+    .semantic-demo {
+      border: 2px dashed var(--border); border-radius: 8px; padding: 16px;
+    }
+    .semantic-demo header, .semantic-demo nav, .semantic-demo main,
+    .semantic-demo article, .semantic-demo aside, .semantic-demo footer {
+      background: #0f0f1a; border: 1px solid var(--border);
+      border-radius: 6px; padding: 12px 16px; margin-bottom: 8px;
+    }
+    .semantic-demo header { border-color: #ff6b3540; }
+    .semantic-demo nav { border-color: #7b5ea740; }
+    .semantic-demo main { border-color: #00ffc240; }
+    .semantic-demo aside { border-color: #ffd70040; }
+    .semantic-demo footer { border-color: #60606080; }
+    .sem-label {
+      font-family: 'Space Mono', monospace; font-size: 11px;
+      color: var(--muted); display: block;
+    }
+    .sem-name {
+      font-family: 'Space Mono', monospace; font-size: 13px;
+      font-weight: 700;
+    }
+    .semantic-demo header .sem-name { color: #ff6b35; }
+    .semantic-demo nav .sem-name { color: #7b5ea7; }
+    .semantic-demo main .sem-name { color: #00ffc2; }
+    .semantic-demo aside .sem-name { color: #ffd700; }
+    .semantic-demo footer .sem-name { color: var(--muted); }
+    .main-layout { display: flex; gap: 8px; }
+    .main-layout main { flex: 2; }
+    .main-layout aside { flex: 1; margin-bottom: 0; }
+
+    /* Form demo */
+    .html-form { display: flex; flex-direction: column; gap: 14px; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group label {
+      font-family: 'Space Mono', monospace; font-size: 12px; color: var(--muted);
+    }
+    .form-group input, .form-group select, .form-group textarea {
+      background: #080810; border: 1px solid var(--border);
+      border-radius: 6px; padding: 10px 14px;
+      color: var(--text); font-family: 'Space Mono', monospace; font-size: 13px;
+      transition: border-color 0.2s;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+      outline: none; border-color: var(--accent);
+    }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .form-btn {
+      padding: 12px 24px;
+      background: var(--accent); color: #000;
+      border: none; border-radius: 6px;
+      font-family: 'Space Mono', monospace; font-weight: 700; font-size: 13px;
+      cursor: pointer; align-self: flex-start;
+    }
+
+    /* Table demo */
+    .html-table { width: 100%; border-collapse: collapse; font-family: 'Space Mono', monospace; font-size: 13px; }
+    .html-table thead th {
+      background: #ff6b3515; color: var(--accent);
+      padding: 12px 16px; text-align: left;
+      border-bottom: 2px solid #ff6b3540; font-size: 11px; letter-spacing: 1px;
+    }
+    .html-table tbody td { padding: 12px 16px; border-bottom: 1px solid var(--border); color: var(--text); }
+    .html-table tbody tr:hover td { background: #ffffff05; }
+    .html-table tfoot td {
+      padding: 12px 16px; color: var(--muted); font-size: 12px;
+      border-top: 1px solid var(--border);
+    }
+
+    /* Media demo */
+    .media-demo { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .media-item {
+      background: #080810; border: 1px solid var(--border);
+      border-radius: 8px; padding: 16px; text-align: center;
+    }
+    .media-placeholder {
+      width: 100%; aspect-ratio: 16/9; background: #0f0f20;
+      border-radius: 6px; display: flex; align-items: center; justify-content: center;
+      font-size: 32px; margin-bottom: 10px; border: 1px dashed var(--border);
+    }
+    .media-label { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--muted); }
+    .media-tag { font-family: 'Space Mono', monospace; font-size: 12px; color: var(--accent); margin-bottom: 4px; }
+
+    /* Accessibility demo */
+    .a11y-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .a11y-item {
+      display: flex; align-items: flex-start; gap: 16px;
+      background: #080810; border: 1px solid var(--border); border-radius: 8px; padding: 16px;
+    }
+    .a11y-icon { font-size: 20px; flex-shrink: 0; }
+    .a11y-item h4 { font-size: 14px; font-weight: 800; margin-bottom: 4px; }
+    .a11y-item p { font-family: 'Space Mono', monospace; font-size: 12px; color: var(--muted); line-height: 1.6; }
+    .a11y-code {
+      font-family: 'Space Mono', monospace; font-size: 11px;
+      background: #00ffc210; color: var(--accent); padding: 2px 6px; border-radius: 3px;
+    }
+
+    @media (max-width: 640px) {
+      .hero, .content { padding-left: 24px; padding-right: 24px; }
+      nav { padding: 16px 24px; }
+      .form-row, .media-demo { grid-template-columns: 1fr; }
+      .main-layout { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="index.html">← Portfolio</a>
+    <span>/</span>
+    <span style="color:var(--text)">HTML</span>
+  </nav>
+
+  <div class="hero">
+    <div class="section-tag">Section 02 — Markup</div>
+    <h1>HTML</h1>
+    <p class="intro">HyperText Markup Language is the backbone of the web. It defines the structure and meaning of content. Below are live demonstrations of key HTML concepts.</p>
+  </div>
+
+  <div class="content">
+
+    <!-- Demo 1: Semantic HTML -->
+    <div class="demo-block">
+      <div class="demo-header">
+        <span class="demo-title">Semantic Document Structure</span>
+        <span class="demo-tag">HTML5 SEMANTICS</span>
+      </div>
+      <div class="demo-body">
+        <div class="demo-explanation">
+          <strong>What this demonstrates:</strong> HTML5 introduced semantic elements that give meaning to page structure.
+          Unlike using generic &lt;div&gt; tags, semantic elements like &lt;header&gt;, &lt;nav&gt;, &lt;main&gt;, &lt;article&gt;,
+          &lt;aside&gt; and &lt;footer&gt; describe the <strong>purpose</strong> of each section — improving
+          accessibility, SEO, and code readability.
+        </div>
+        <div class="demo-render">
+          <div class="semantic-demo">
+            <header><span class="sem-label">semantic element</span><span class="sem-name">&lt;header&gt;</span></header>
+            <nav><span class="sem-label">semantic element</span><span class="sem-name">&lt;nav&gt;</span></nav>
+            <div class="main-layout">
+              <main><span class="sem-label">semantic element</span><span class="sem-name">&lt;main&gt; + &lt;article&gt;</span></main>
+              <aside><span class="sem-label">semantic element</span><span class="sem-name">&lt;aside&gt;</span></aside>
+            </div>
+            <footer><span class="sem-label">semantic element</span><span class="sem-name">&lt;footer&gt;</span></footer>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Demo 2: Forms -->
+    <div class="demo-block">
+      <div class="demo-header">
+        <span class="demo-title">HTML Forms & Input Types</span>
+        <span class="demo-tag">FORMS</span>
+      </div>
+      <div class="demo-body">
+        <div class="demo-explanation">
+          <strong>What this demonstrates:</strong> HTML forms collect user input. The <strong>&lt;form&gt;</strong> element wraps
+          inputs, which each have a <strong>type</strong> attribute (text, email, password, date, select etc.).
+          Labels are associated with inputs via the <strong>for</strong> and <strong>id</strong> attributes, which is essential for accessibility.
+          The <strong>required</strong>, <strong>placeholder</strong> and <strong>pattern</strong> attributes provide built-in validation.
+        </div>
+        <div class="demo-render">
+          <form class="html-form" onsubmit="return false">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="fname">First Name</label>
+                <input type="text" id="fname" placeholder="John" required/>
+              </div>
+              <div class="form-group">
+                <label for="lname">Last Name</label>
+                <input type="text" id="lname" placeholder="Doe" required/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="email">Email Address</label>
+              <input type="email" id="email" placeholder="john@example.com" required/>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="dob">Date of Birth</label>
+                <input type="date" id="dob"/>
+              </div>
+              <div class="form-group">
+                <label for="role">Role</label>
+                <select id="role">
+                  <option>Frontend Developer</option>
+                  <option>Backend Developer</option>
+                  <option>Full Stack Developer</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="bio">Short Bio</label>
+              <textarea id="bio" rows="3" placeholder="Tell us about yourself..."></textarea>
+            </div>
+            <button class="form-btn" type="submit">Submit Form</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Demo 3: Tables -->
+    <div class="demo-block">
+      <div class="demo-header">
+        <span class="demo-title">HTML Tables</span>
+        <span class="demo-tag">TABULAR DATA</span>
+      </div>
+      <div class="demo-body">
+        <div class="demo-explanation">
+          <strong>What this demonstrates:</strong> Tables are used to display tabular data in rows and columns.
+          A properly structured table uses <strong>&lt;thead&gt;</strong> for column headings, <strong>&lt;tbody&gt;</strong> for data rows,
+          and optionally <strong>&lt;tfoot&gt;</strong> for summaries. The <strong>scope</strong> and <strong>caption</strong>
+          attributes improve accessibility for screen readers.
+        </div>
+        <div class="demo-render">
+          <table class="html-table">
+            <caption style="font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);text-align:left;margin-bottom:8px;">Web Technologies Overview</caption>
+            <thead>
+              <tr>
+                <th scope="col">Technology</th>
+                <th scope="col">Type</th>
+                <th scope="col">Purpose</th>
+                <th scope="col">Runs In</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>HTML</td><td>Markup</td><td>Structure & content</td><td>Browser</td></tr>
+              <tr><td>CSS</td><td>Stylesheet</td><td>Visual styling</td><td>Browser</td></tr>
+              <tr><td>JavaScript</td><td>Scripting</td><td>Behaviour & logic</td><td>Browser / Server</td></tr>
+              <tr><td>Node.js</td><td>Runtime</td><td>Server-side logic</td><td>Server</td></tr>
+              <tr><td>SQL</td><td>Query Language</td><td>Database management</td><td>Database</td></tr>
+            </tbody>
+            <tfoot>
+              <tr><td colspan="4">5 core technologies — all are used in full stack development</td></tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Demo 4: Media Elements -->
+    <div class="demo-block">
+      <div class="demo-header">
+        <span class="demo-title">HTML Media Elements</span>
+        <span class="demo-tag">MEDIA</span>
+      </div>
+      <div class="demo-body">
+        <div class="demo-explanation">
+          <strong>What this demonstrates:</strong> HTML5 introduced native media elements — <strong>&lt;img&gt;</strong>,
+          <strong>&lt;video&gt;</strong>, <strong>&lt;audio&gt;</strong> and <strong>&lt;figure&gt;</strong> — allowing media to be embedded
+          directly without plugins. The <strong>alt</strong> attribute on images is critical for accessibility.
+          The <strong>controls</strong> attribute on video/audio adds native playback UI.
+        </div>
+        <div class="demo-render">
+          <div class="media-demo">
+            <div class="media-item">
+              <div class="media-placeholder">🖼️</div>
+              <div class="media-tag">&lt;img&gt;</div>
+              <div class="media-label">src, alt, width, height</div>
+            </div>
+            <div class="media-item">
+              <div class="media-placeholder">🎬</div>
+              <div class="media-tag">&lt;video&gt;</div>
+              <div class="media-label">src, controls, autoplay, loop</div>
+            </div>
+            <div class="media-item">
+              <div class="media-placeholder">🎵</div>
+              <div class="media-tag">&lt;audio&gt;</div>
+              <div class="media-label">src, controls, preload</div>
+            </div>
+            <div class="media-item">
+              <div class="media-placeholder">📊</div>
+              <div class="media-tag">&lt;canvas&gt; / &lt;svg&gt;</div>
+              <div class="media-label">For graphics and animations</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Demo 5: Accessibility -->
+    <div class="demo-block">
+      <div class="demo-header">
+        <span class="demo-title">Accessibility Attributes</span>
+        <span class="demo-tag">A11Y</span>
+      </div>
+      <div class="demo-body">
+        <div class="demo-explanation">
+          <strong>What this demonstrates:</strong> HTML provides built-in attributes to make web pages accessible to people using assistive technologies like screen readers.
+          ARIA (Accessible Rich Internet Applications) attributes extend native HTML accessibility when needed.
+        </div>
+        <div class="demo-render">
+          <ul class="a11y-list">
+            <li class="a11y-item">
+              <span class="a11y-icon">🏷️</span>
+              <div>
+                <h4>alt attribute</h4>
+                <p>Provides text description for images. Used by screen readers when images cannot be seen. <span class="a11y-code">&lt;img alt="Description"&gt;</span></p>
+              </div>
+            </li>
+            <li class="a11y-item">
+              <span class="a11y-icon">🔗</span>
+              <div>
+                <h4>label + for</h4>
+                <p>Associates a label with its form input so screen readers announce the label when the field is focused. <span class="a11y-code">&lt;label for="email"&gt;</span></p>
+              </div>
+            </li>
+            <li class="a11y-item">
+              <span class="a11y-icon">📐</span>
+              <div>
+                <h4>role & aria-label</h4>
+                <p>ARIA attributes describe the role or label of elements when semantics alone aren't enough. <span class="a11y-code">role="button" aria-label="Close"</span></p>
+              </div>
+            </li>
+            <li class="a11y-item">
+              <span class="a11y-icon">⌨️</span>
+              <div>
+                <h4>tabindex</h4>
+                <p>Controls keyboard navigation order. Ensures users who navigate via keyboard can reach all interactive elements. <span class="a11y-code">tabindex="0"</span></p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

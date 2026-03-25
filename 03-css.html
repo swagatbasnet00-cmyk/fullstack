@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>03 — CSS | Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0a0f; --card: #111118; --border: #222230;
+      --accent: #7b5ea7; --text: #e8e8f0; --muted: #6b6b80;
+    }
+    body { background: var(--bg); color: var(--text); font-family: 'Syne', sans-serif; }
+    nav {
+      padding: 20px 40px; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 16px;
+      font-family: 'Space Mono', monospace; font-size: 13px;
+    }
+    nav a { color: var(--muted); text-decoration: none; }
+    nav a:hover { color: var(--accent); }
+    nav span { color: var(--border); }
+    .hero { max-width: 1000px; margin: 0 auto; padding: 60px 40px 20px; }
+    .section-tag {
+      font-family: 'Space Mono', monospace; font-size: 11px;
+      color: var(--accent); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 16px;
+    }
+    h1 { font-size: clamp(36px, 6vw, 72px); font-weight: 800; letter-spacing: -2px; line-height: 1; margin-bottom: 20px; }
+    .intro { font-family: 'Space Mono', monospace; font-size: 14px; color: var(--muted); max-width: 620px; line-height: 1.8; }
+    .content { max-width: 1000px; margin: 0 auto; padding: 40px 40px 80px; }
+    .demo-block {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 12px; margin-bottom: 32px; overflow: hidden;
+    }
+    .demo-header {
+      padding: 16px 24px; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .demo-title { font-size: 15px; font-weight: 800; }
+    .demo-tag {
+      font-family: 'Space Mono', monospace; font-size: 10px;
+      color: var(--accent); background: #7b5ea715;
+      border: 1px solid #7b5ea730; padding: 3px 10px; border-radius: 4px; letter-spacing: 1px;
+    }
+    .demo-body { padding: 28px; }
+    .demo-explanation {
+      font-family: 'Space Mono', monospace; font-size: 12px;
+      color: var(--muted); line-height: 1.7; margin-bottom: 20px;
+      padding-bottom: 20px; border-bottom: 1px solid var(--border);
+    }
+    .demo-explanation strong { color: var(--accent); }
+
+    /* ============ FLEXBOX DEMO ============ */
+    .flex-controls { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; }
+    .flex-controls label { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--muted); }
+    .flex-controls select {
+      background: #080810; border: 1px solid var(--border); border-radius: 4px;
+      color: var(--text); font-family: 'Space Mono', monospace; font-size: 12px;
+      padding: 5px 8px; cursor: pointer;
+    }
+    .flex-container {
+      background: #080810; border: 2px dashed var(--border);
+      border-radius: 8px; padding: 16px; min-height: 100px;
+      transition: all 0.3s ease;
+    }
+    .flex-box {
+      width: 60px; height: 60px; border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Space Mono', monospace; font-weight: 700; font-size: 14px;
+      transition: transform 0.2s; cursor: default;
+    }
+    .flex-box:nth-child(1) { background: #7b5ea730; color: #9b7ec7; border: 1px solid #7b5ea750; }
+    .flex-box:nth-child(2) { background: #00ffc220; color: #00ffc2; border: 1px solid #00ffc240; width: 90px; }
+    .flex-box:nth-child(3) { background: #ff6b3520; color: #ff6b35; border: 1px solid #ff6b3540; }
+    .flex-box:hover { transform: scale(1.05); }
+
+    /* ============ GRID DEMO ============ */
+    .grid-demo {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      grid-template-rows: auto auto;
+      gap: 8px;
+    }
+    .grid-item {
+      background: #080810; border: 1px solid var(--border);
+      border-radius: 8px; padding: 16px;
+      font-family: 'Space Mono', monospace; font-size: 12px; color: var(--muted);
+      display: flex; align-items: center; justify-content: center; min-height: 60px;
+    }
+    .grid-item.span2 { grid-column: span 2; background: #7b5ea715; border-color: #7b5ea740; color: #9b7ec7; }
+    .grid-item.tall { grid-row: span 2; background: #00ffc210; border-color: #00ffc230; color: #00ffc2; }
+    .grid-item.accent { background: #ff6b3515; border-color: #ff6b3540; color: #ff8a5f; }
+
+    /* ============ ANIMATIONS DEMO ============ */
+    .anim-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; }
+    .anim-box {
+      background: #080810; border: 1px solid var(--border); border-radius: 8px;
+      padding: 20px; display: flex; flex-direction: column; align-items: center;
+      gap: 12px; cursor: pointer;
+    }
+    .anim-box:hover .anim-circle { animation-play-state: running !important; }
+    .anim-box p { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--muted); text-align: center; }
+
+    .anim-circle { width: 40px; height: 40px; border-radius: 50%; }
+
+    .bounce-ball { background: var(--accent); animation: bounce 1s ease infinite paused; }
+    @keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+
+    .spin-ring { border: 3px solid var(--border); border-top-color: #00ffc2; animation: spin 1s linear infinite paused; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .pulse-dot { background: #ff6b35; animation: pulse 1.5s ease-in-out infinite paused; }
+    @keyframes pulse { 0%,100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.3); opacity: 0.7; } }
+
+    .shake-box { border-radius: 8px; background: #ffd700; animation: shake 0.5s ease infinite paused; }
+    @keyframes shake { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+
+    .anim-box:hover .anim-circle { animation-play-state: running; }
+
+    /* ============ CSS VARIABLES ============ */
+    .vars-demo { display: flex; flex-direction: column; gap: 12px; }
+    .var-row {
+      display: flex; align-items: center; gap: 16px;
+      background: #080810; border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px;
+    }
+    .var-swatch { width: 40px; height: 40px; border-radius: 6px; flex-shrink: 0; }
+    .var-info { flex: 1; }
+    .var-name { font-family: 'Space Mono', monospace; font-size: 12px; color: var(--accent); }
+    .var-value { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--muted); }
+
+    /* ============ PSEUDO CLASSES ============ */
+    .pseudo-demo { display: flex; flex-direction: column; gap: 10px; }
+    .pseudo-item { padding: 14px 18px; border-radius: 8px; cursor: pointer;
+      font-family: 'Space Mono', monospace; font-size: 13px; transition: all 0.2s; }
+    .pseudo-hover { background: #080810; border: 1px solid var(--border); }
+    .pseudo-hover:hover { background: #7b5ea720; border-color: var(--accent); color: #9b7ec7; }
+    .pseudo-active { background: #080810; border: 1px solid var(--border); }
+    .pseudo-active:active { background: #ff6b3530; border-color: #ff6b35; transform: scale(0.98); }
+    .pseudo-focus-wrap input {
+      background: #080810; border: 1px solid var(--border); border-radius: 8px;
+      padding: 14px 18px; width: 100%; color: var(--text);
+      font-family: 'Space Mono', monospace; font-size: 13px;
+    }
+    .pseudo-focus-wrap input:focus { outline: none; border-color: #00ffc2; box-shadow: 0 0 0 3px #00ffc215; }
+    .pseudo-nth { display: flex; gap: 8px; }
+    .nth-item {
+      width: 40px; height: 40px; border-radius: 6px;
+      background: #080810; border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Space Mono', monospace; font-size: 13px; font-weight: 700;
+    }
+    .nth-item:nth-child(odd) { background: #7b5ea730; border-color: #7b5ea750; color: #9b7ec7; }
+
+    /* ============ RESPONSIVE ============ */
+    .responsive-demo { display: grid; gap: 8px; }
+    .rwd-label {
+      font-family: 'Space Mono', monospace; font-size: 11px;
+      padding: 10px 14px; border-radius: 6px; text-align: center;
+    }
+    .rwd-mobile { background: #ff6b3515; border: 1px solid #ff6b3540; color: #ff8a5f; }
+    .rwd-tablet { background: #7b5ea715; border: 1px solid #7b5ea740; color: #9b7ec7; }
+    .rwd-desktop { background: #00ffc210; border: 1px solid #00ffc230; color: #00ffc2; }
+
+    @media (max-width: 640px) {
+      .hero, .content { padding-left: 24px; padding-right: 24px; }
+      nav { padding: 16px 24px; }
+      .grid-demo { grid-template-columns: 1fr 1fr; }
+      .grid-item.tall { grid-row: span 1; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="index.html">← Portfolio</a>
+    <span>/</span>
+    <span style="color:var(--text)">CSS</span>
+  </nav>
+
+  <div class="hero">
+    <div class="section-tag">Section 03 — Styling</div>
+    <h1>CSS</h1>
+    <p class="intro">Cascading Style Sheets control the visual presentation of HTML. These interactive demos cover layout, animations, custom properties, and responsive design.</p>
+  </div>
+
+  <div class="content">
+
+    <!-- Demo 1: Flexbox -->
+    <div class="demo-block">
+      <div class="demo-header">
+        <span class="demo-title">Flexbox Layout</span>
+        <span class="demo-tag">FLEXBOX</span>
+      </div>
+      <div class="demo-body">
+        <div class="demo-explanation">
+          <strong>What this demonstrates:</strong> Flexbox is a one-dimensional layout model. The <strong>display: flex</strong> property
+          on a container makes its children flex items. Use <strong>justify-content</strong> to align items along the main axis and
+          <strong>align-items</strong> for the cross axis. Change the controls below to see the effect live.
+        </div>
+        <div class="flex-controls">
+          <div>
+            <label>justify-content: </label>
+            <select onchange="document.getElementById('flexContainer').style.justifyContent=this.value">
+              <option value="flex-start">flex-start</option>
+              <option value="flex-end">flex-end</option>
+              <option value="center">center</option>
+              <option value="space-between">space-between</option>
+              <option value="space-around">space-around</option>
+              <option value="space-evenly">space-evenly</option>
+            </select>
+          </div>
+          <div>
+            <label>align-items: </label>
+            <select onchange="document.getElementById('flexContainer').style.alignItems=this.value">
+              <option value="flex-start">flex-start</option>
+              <option value="flex-end">flex-end</option>
+              <option value="center">center</option>
+              <option value="stretch">stretch</option>
+            </select>
+          </div>
+          <div>
+            <label>flex-direction: </label>
+            <select onchange="document.getElementById('flexContainer').style.flexDirection=this.value">
+              <option value="row">row</option>
+              <option value="row-reverse">row-reverse</option>
+              <option value="column">column</option>
+            </select>
+          </div>
+        </div>
+        <div class="flex-container" id="flexContainer" style="display:flex; align-items:flex-start;">
+          <div class="flex-box">A</div>
+          <div class="flex-box">B</div>
+          <div class="flex-box">C</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Demo 2: Grid -->
+    <div class="demo-block">
+      <div class="demo-header">
+        <span class="demo-title">CSS Grid Layout</span>
+        <span class="demo-tag">GRID</span>
+      </div>
+      <div class="demo-body">
+        <div class="demo-explanation">
+          <strong>What this demonstrates:</strong> CSS Grid is a two-dimensional layout system. Using
+          <strong>grid-template-columns</strong> and <strong>grid-template-rows</strong>, items can be precisely placed.
+          <strong>grid-column: span 2</strong> and <strong>grid-row: span 2</strong> make items occupy multiple cells.
+          The <strong>fr</strong> unit distributes available space fractionally.
+        </div>
+        <div class="grid-demo">
+          <div class="grid-item tall">grid-row: span 2</div>
+          <div class="grid-item span2">grid-column: span 2</div>
+          <div class="grid-item">1fr</div>
+          <div class="grid-item accent">1fr</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Demo 3: Animations -->
+    <div class="demo-block">
+      <div class="demo-header">
+        <span class="demo-title">CSS Animations & Transitions</span>
+        <span class="demo-tag">ANIMATIONS</span>
+      </div>
+      <div class="demo-body">
+        <div class="demo-explanation">
+          <strong>What this demonstrates:</strong> CSS animations use <strong>@keyframes</strong> to define motion sequences and
+          the <strong>animation</strong> shorthand to apply them. <strong>animation-duration</strong>, <strong>timing-function</strong> and
+          <strong>animation-iteration-count: infinite</strong> control how they play. Hover each box to start the animation.
+        </div>
+        <div class="anim-grid">
+          <div class="anim-box"><div class="anim-circle bounce-ball"></div><p>@keyframes bounce</p></div>
+          <div class="anim-box"><div class="anim-circle spin-ring"></div><p>@keyframes spin</p></div>
+          <div class="anim-box"><div class="anim-circle pulse-dot"></div><p>@keyframes pulse</p></div>
+          <div class="anim-box"><div class="anim-circle shake-box"></div><p>@keyframes shake</p></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Demo 4: CSS Custom Properties -->
+    <div class="demo-block">
+      <div class="demo-header">
+        <span class="demo-title">CSS Custom Properties (Variables)</span>
+        <span class="demo-tag">CSS VARIABLES</span>
+      </div>
+      <div class="demo-body">
+        <div class="demo-explanation">
+          <strong>What this demonstrates:</strong> CSS custom properties (variables) are defined with a <strong>--name</strong> syntax
+          inside a <strong>:root</strong> selector, making them globally accessible. Used via <strong>var(--name)</strong>.
+          They make theming, consistency and updates dramatically easier — change one value to update the whole page.
+        </div>
+        <div class="vars-demo">
+          <div class="var-row">
+            <div class="var-swatch" style="background:#0a0a0f; border:1px solid #333;"></div>
+            <div class="var-info">
+              <div class="var-name">--bg</div>
+              <div class="var-value">#0a0a0f — Page background colour</div>
+            </div>
+          </div>
+          <div class="var-row">
+            <div class="var-swatch" style="background:#7b5ea7;"></div>
+            <div class="var-info">
+              <div class="var-name">--accent</div>
+              <div class="var-value">#7b5ea7 — Primary accent colour</div>
+            </div>
+          </div>
+          <div class="var-row">
+            <div class="var-swatch" style="background:#00ffc2;"></div>
+            <div class="var-info">
+              <div class="var-name">--highlight</div>
+              <div class="var-value">#00ffc2 — Secondary highlight</div>
+            </div>
+          </div>
+          <div class="var-row">
+            <div class="var-swatch" style="background:#6b6b80;"></div>
+            <div class="var-info">
+              <div class="var-name">--muted</div>
+              <div class="var-value">#6b6b80 — Secondary text</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Demo 5: Pseudo-classes -->
+    <div class="demo-block">
+      <div class="demo-header">
+        <span class="demo-title">Pseudo-Classes & Pseudo-Elements</span>
+        <span class="demo-tag">PSEUDO</span>
+      </div>
+      <div class="demo-body">
+        <div class="demo-explanation">
+          <strong>What this demonstrates:</strong> Pseudo-classes like <strong>:hover</strong>, <strong>:focus</strong>, <strong>:active</strong>
+          and <strong>:nth-child()</strong> apply styles based on user interaction or element position, without
+          needing extra classes. Interact with the elements below to see the effects.
+        </div>
+        <div class="pseudo-demo">
+          <div class="pseudo-hover">:hover — Hover over me to see the colour change</div>
+          <div class="pseudo-active">:active — Click and hold me to see the active state</div>
+          <div class="pseudo-focus-wrap">
+            <input type="text" placeholder=":focus — Click inside this input to see focus ring"/>
+          </div>
+          <div>
+            <p style="font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);margin-bottom:8px;">:nth-child(odd) highlights odd-numbered items</p>
+            <div class="pseudo-nth">
+              <div class="nth-item">1</div>
+              <div class="nth-item">2</div>
+              <div class="nth-item">3</div>
+              <div class="nth-item">4</div>
+              <div class="nth-item">5</div>
+              <div class="nth-item">6</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Demo 6: Responsive Design -->
+    <div class="demo-block">
+      <div class="demo-header">
+        <span class="demo-title">Responsive Design & Media Queries</span>
+        <span class="demo-tag">RESPONSIVE</span>
+      </div>
+      <div class="demo-body">
+        <div class="demo-explanation">
+          <strong>What this demonstrates:</strong> Media queries use <strong>@media (max-width: ...)</strong> to apply
+          different styles at different viewport sizes. This makes layouts adapt to mobile, tablet and desktop screens.
+          Combined with flexible units like <strong>%, vw, rem</strong> and <strong>clamp()</strong>, pages respond fluidly.
+        </div>
+        <div class="responsive-demo">
+          <div class="rwd-label rwd-mobile">📱 Mobile — @media (max-width: 480px) { font-size: 14px; columns: 1; }</div>
+          <div class="rwd-label rwd-tablet">💻 Tablet — @media (max-width: 768px) { font-size: 15px; columns: 2; }</div>
+          <div class="rwd-label rwd-desktop">🖥️ Desktop — Default styles — columns: 3; font-size: 16px;</div>
+        </div>
+        <p style="font-family:'Space Mono',monospace;font-size:12px;color:var(--muted);margin-top:16px;">Try resizing this browser window to see how the layout of this portfolio adapts!</p>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

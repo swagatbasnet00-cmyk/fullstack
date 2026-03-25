@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>01 — Full Stack Development | Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0a0f; --card: #111118; --border: #222230;
+      --accent: #00ffc2; --text: #e8e8f0; --muted: #6b6b80;
+    }
+    body { background: var(--bg); color: var(--text); font-family: 'Syne', sans-serif; min-height: 100vh; }
+
+    nav {
+      padding: 20px 40px;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 16px;
+      font-family: 'Space Mono', monospace; font-size: 13px;
+    }
+    nav a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    nav a:hover { color: var(--accent); }
+    nav span { color: var(--border); }
+
+    .hero {
+      max-width: 1000px; margin: 0 auto;
+      padding: 60px 40px 40px;
+    }
+    .section-tag {
+      font-family: 'Space Mono', monospace; font-size: 11px;
+      color: var(--accent); letter-spacing: 2px;
+      text-transform: uppercase; margin-bottom: 16px;
+    }
+    h1 { font-size: clamp(36px, 6vw, 72px); font-weight: 800; letter-spacing: -2px; line-height: 1; margin-bottom: 20px; }
+    .intro {
+      font-family: 'Space Mono', monospace; font-size: 14px;
+      color: var(--muted); max-width: 620px; line-height: 1.8;
+    }
+
+    .content { max-width: 1000px; margin: 0 auto; padding: 40px 40px 80px; }
+
+    /* Definition block */
+    .definition-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--accent);
+      border-radius: 8px;
+      padding: 28px 32px;
+      margin-bottom: 48px;
+    }
+    .definition-box h2 {
+      font-size: 20px; font-weight: 800; margin-bottom: 12px; color: var(--accent);
+    }
+    .definition-box p {
+      font-family: 'Space Mono', monospace;
+      font-size: 14px; color: var(--muted); line-height: 1.8;
+    }
+
+    /* Stack diagram */
+    h2.section-title {
+      font-size: 26px; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.5px;
+    }
+    .section-desc {
+      font-family: 'Space Mono', monospace; font-size: 13px;
+      color: var(--muted); margin-bottom: 28px; line-height: 1.6;
+    }
+
+    .stack-diagram {
+      display: flex; flex-direction: column; gap: 4px;
+      margin-bottom: 56px;
+    }
+    .stack-layer {
+      border-radius: 10px; padding: 24px 28px;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+      position: relative;
+    }
+    .stack-layer:hover { transform: translateX(6px); }
+    .stack-layer.fe { background: #00ffc212; border-color: #00ffc230; }
+    .stack-layer.fe:hover { border-color: var(--accent); box-shadow: 0 0 30px #00ffc215; }
+    .stack-layer.be { background: #7b5ea712; border-color: #7b5ea730; }
+    .stack-layer.be:hover { border-color: #7b5ea7; box-shadow: 0 0 30px #7b5ea715; }
+    .stack-layer.db { background: #ff6b3512; border-color: #ff6b3530; }
+    .stack-layer.db:hover { border-color: #ff6b35; box-shadow: 0 0 30px #ff6b3515; }
+
+    .layer-label {
+      font-family: 'Space Mono', monospace; font-size: 10px;
+      letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px;
+    }
+    .fe .layer-label { color: var(--accent); }
+    .be .layer-label { color: #7b5ea7; }
+    .db .layer-label { color: #ff6b35; }
+
+    .layer-title { font-size: 20px; font-weight: 800; margin-bottom: 8px; }
+    .layer-desc {
+      font-family: 'Space Mono', monospace;
+      font-size: 13px; color: var(--muted); line-height: 1.6; margin-bottom: 14px;
+    }
+    .tech-badges { display: flex; flex-wrap: wrap; gap: 8px; }
+    .tech-badge {
+      font-family: 'Space Mono', monospace; font-size: 11px;
+      padding: 4px 10px; border-radius: 4px;
+    }
+    .fe .tech-badge { background: #00ffc215; color: var(--accent); border: 1px solid #00ffc230; }
+    .be .tech-badge { background: #7b5ea715; color: #9b7ec7; border: 1px solid #7b5ea730; }
+    .db .tech-badge { background: #ff6b3515; color: #ff8a5f; border: 1px solid #ff6b3530; }
+
+    .connector {
+      text-align: center; font-family: 'Space Mono', monospace;
+      font-size: 18px; color: var(--border); line-height: 1;
+      padding: 2px 0;
+    }
+
+    /* Request flow */
+    .flow-section { margin-bottom: 56px; }
+    .flow-steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 4px;
+      margin-top: 24px;
+    }
+    .flow-step {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px; padding: 20px;
+      position: relative;
+    }
+    .step-num {
+      font-family: 'Space Mono', monospace;
+      font-size: 28px; font-weight: 700;
+      color: var(--border); line-height: 1;
+      margin-bottom: 12px;
+    }
+    .flow-step h4 { font-size: 15px; font-weight: 800; margin-bottom: 6px; }
+    .flow-step p { font-family: 'Space Mono', monospace; font-size: 12px; color: var(--muted); line-height: 1.6; }
+
+    /* Examples */
+    .examples-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 16px;
+    }
+    .example-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 10px; padding: 24px;
+    }
+    .example-card h4 { font-size: 16px; font-weight: 800; margin-bottom: 8px; }
+    .example-card p { font-family: 'Space Mono', monospace; font-size: 12px; color: var(--muted); line-height: 1.6; margin-bottom: 14px; }
+    .example-stack {
+      font-family: 'Space Mono', monospace; font-size: 11px;
+      color: var(--accent); padding: 6px 10px;
+      background: #00ffc208; border-radius: 4px;
+    }
+
+    @media (max-width: 600px) {
+      .hero, .content { padding-left: 24px; padding-right: 24px; }
+      nav { padding: 16px 24px; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="index.html">← Portfolio</a>
+    <span>/</span>
+    <span style="color:var(--text)">Full Stack Development</span>
+  </nav>
+
+  <div class="hero">
+    <div class="section-tag">Section 01 — Overview</div>
+    <h1>Full Stack Development</h1>
+    <p class="intro">Understanding the layers of a modern web application — from what the user sees to how data is stored and retrieved.</p>
+  </div>
+
+  <div class="content">
+
+    <div class="definition-box">
+      <h2>Definition</h2>
+      <p>
+        Full stack development refers to the practice of building both the <strong style="color:var(--accent)">frontend</strong> (client-side) and
+        <strong style="color:#7b5ea7">backend</strong> (server-side) of a web application.
+        A full stack developer has skills across every layer of the stack — from designing what a user sees
+        in their browser, to writing server logic, to managing databases.
+        The term "stack" refers to the collection of technologies used together to build a complete application.
+      </p>
+    </div>
+
+    <h2 class="section-title">The Three Layers</h2>
+    <p class="section-desc">Every web application is built from three distinct layers. Click each layer to explore it.</p>
+
+    <div class="stack-diagram">
+
+      <div class="stack-layer fe">
+        <div class="layer-label">Layer 1 — Client Side</div>
+        <div class="layer-title">Frontend</div>
+        <div class="layer-desc">
+          Everything the user sees and interacts with. Runs in the browser. Responsible for layout, styling, user interactions, and presenting data from the backend.
+        </div>
+        <div class="tech-badges">
+          <span class="tech-badge">HTML</span>
+          <span class="tech-badge">CSS</span>
+          <span class="tech-badge">JavaScript</span>
+          <span class="tech-badge">React</span>
+          <span class="tech-badge">Bootstrap</span>
+        </div>
+      </div>
+
+      <div class="connector">⇅</div>
+
+      <div class="stack-layer be">
+        <div class="layer-label">Layer 2 — Server Side</div>
+        <div class="layer-title">Backend</div>
+        <div class="layer-desc">
+          The application logic that runs on a server. Handles requests from the frontend, processes business rules, talks to the database, and returns responses (usually JSON).
+        </div>
+        <div class="tech-badges">
+          <span class="tech-badge">Node.js</span>
+          <span class="tech-badge">Express</span>
+          <span class="tech-badge">Python / Django</span>
+          <span class="tech-badge">REST API</span>
+          <span class="tech-badge">Authentication</span>
+        </div>
+      </div>
+
+      <div class="connector">⇅</div>
+
+      <div class="stack-layer db">
+        <div class="layer-label">Layer 3 — Persistence</div>
+        <div class="layer-title">Database</div>
+        <div class="layer-desc">
+          Where data is stored permanently. The backend queries the database to read, write, update, and delete data. Can be relational (SQL) or document-based (NoSQL).
+        </div>
+        <div class="tech-badges">
+          <span class="tech-badge">MySQL</span>
+          <span class="tech-badge">PostgreSQL</span>
+          <span class="tech-badge">MongoDB</span>
+          <span class="tech-badge">SQLite</span>
+          <span class="tech-badge">Firebase</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Request flow -->
+    <div class="flow-section">
+      <h2 class="section-title">How a Request Works</h2>
+      <p class="section-desc">A typical journey from a user clicking a button to data appearing on screen.</p>
+      <div class="flow-steps">
+        <div class="flow-step">
+          <div class="step-num">01</div>
+          <h4>User Interaction</h4>
+          <p>User clicks a button or submits a form in the browser (Frontend).</p>
+        </div>
+        <div class="flow-step">
+          <div class="step-num">02</div>
+          <h4>HTTP Request</h4>
+          <p>JavaScript sends an HTTP request (GET/POST) to the backend server via an API endpoint.</p>
+        </div>
+        <div class="flow-step">
+          <div class="step-num">03</div>
+          <h4>Server Processing</h4>
+          <p>The backend receives the request, validates it, and runs business logic.</p>
+        </div>
+        <div class="flow-step">
+          <div class="step-num">04</div>
+          <h4>Database Query</h4>
+          <p>The server queries the database — fetching or updating the required data.</p>
+        </div>
+        <div class="flow-step">
+          <div class="step-num">05</div>
+          <h4>JSON Response</h4>
+          <p>Server sends data back to the browser as a JSON response.</p>
+        </div>
+        <div class="flow-step">
+          <div class="step-num">06</div>
+          <h4>DOM Update</h4>
+          <p>JavaScript uses the response to update the page without a full reload.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Real world examples -->
+    <h2 class="section-title">Real-World Tech Stacks</h2>
+    <p class="section-desc">Different combinations of technologies are used depending on the project requirements.</p>
+    <div class="examples-grid">
+      <div class="example-card">
+        <h4>MERN Stack</h4>
+        <p>A JavaScript-only stack popular for SPAs and real-time applications like social platforms.</p>
+        <div class="example-stack">MongoDB · Express · React · Node.js</div>
+      </div>
+      <div class="example-card">
+        <h4>LAMP Stack</h4>
+        <p>A classic stack used for CMS sites, blogs and e-commerce. Powers much of the early web.</p>
+        <div class="example-stack">Linux · Apache · MySQL · PHP</div>
+      </div>
+      <div class="example-card">
+        <h4>Django Stack</h4>
+        <p>Python-based stack favoured for data-heavy applications and rapid development.</p>
+        <div class="example-stack">Python · Django · PostgreSQL · JS</div>
+      </div>
+      <div class="example-card">
+        <h4>JAMstack</h4>
+        <p>Modern serverless approach using static builds, APIs and CDN delivery. Very fast.</p>
+        <div class="example-stack">JavaScript · APIs · Markup</div>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>
